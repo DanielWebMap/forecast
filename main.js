@@ -96,7 +96,6 @@ map.fire("click", {
 //WINDKARTE
 
 async function loadWind(url) {
-
     const response = await fetch(url);
     const jsondata = await response.json();
     console.log(jsondata);
@@ -117,7 +116,8 @@ async function loadWind(url) {
     forecastDate.setHours(forecastDate.getHours() + jsondata[0].header.forecastTime);
     //console.log(forecastDate);
 
-    document.querySelector("#forecast-date").innerHTML = `(<a href="${url}"> Stand ${forecastDate.toLocaleString()})`
+    document.querySelector("#forecast-date").innerHTML = `(<a href="${url}"> Stand ${forecastDate.toLocaleString()})`;
+
 }
 
 loadWind("https://geographie.uibk.ac.at/data/ecmwf/data/wind-10u-10v-europe.json")
