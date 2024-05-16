@@ -43,7 +43,6 @@ async function showForecast(url) {
     L.geoJSON(jsondata, {
         pointToLayer: function(feature, latlng) {
                 let details = feature.properties.timeseries[0].data.instant.details;
-                console.log(details);
                 let time = new Date(feature.properties.timeseries[0].time);
                 let content = `
                 <ul>
@@ -56,6 +55,16 @@ async function showForecast(url) {
                     <li>Windgeschwindigkeit (km/h): ${Math.round(details.wind_speed * 3.6)}</li>
                 </ul>
                 `;
+
+
+//Wetterstaion für die nächsten 24 STunden in 3-Stunden Schritten
+            for (let i=0; i<=24; i+=3) {
+                let symbol = feature.properties.timeseries[i].data.next_1_hours.summary.symbol_code;
+                content += `<img src="icons/${symbol}.svg" alt="${symbol}" style="width:32px">`
+                console.log(i, symbol)
+            }
+            
+            
                
             L.popup(latlng, {content: content})
         .openOn(themaLayer.forecast);
