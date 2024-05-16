@@ -35,7 +35,14 @@ async function showForecast(url) {
     let response = await fetch(url);
     let jsondata = await response.json();
 
+
+
     // aktuelles Wetter und Wettervorhersage implementieren
     console.log(jsondata);
+    L.geoJSON(jsondata, {
+        pointToLayer: function(feature, latlng) {
+            
+        }
+    }).addTo(themaLayer.forecast)
 }
 showForecast("https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=47.267222&lon=11.392778");
