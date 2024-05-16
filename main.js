@@ -30,6 +30,7 @@ L.control.scale({
     imperial: false,
 }).addTo(map);
 
+
 // Wettervorhersage MET Norway
 async function showForecast(url) {
     let response = await fetch(url);
@@ -43,15 +44,18 @@ async function showForecast(url) {
         pointToLayer: function(feature, latlng) {
                 let details = feature.properties.timeseries[0].data.instant.details;
                 console.log(details);
+                let time = new Date(feature.properties.timeseries[0].time);
                 let content = `
                 <ul>
+                    <h4>Wettervorhersage für ${time.toLocaleString()}</h4>
                     <li>Luftdruck Meereshöhe (hPa): ${details.air_pressure_at_sea_level}</li> 
                     <li>Lufttemperatur(): ${details.air_temperature}</li> 
                     <li>relative Luftfeuchte (%): ${details.relative_humidity}</li> 
                     <li>Windrichtung (°): ${details.wind_from_direction}</li> 
                     <li>Bewölkungsgrad (%): ${details.cloud_area_fraction}</li>
                     <li>Windgeschwindigkeit (km/h): ${Math.round(details.wind_speed * 3.6)}</li>
-                </ul>`
+                </ul>
+                `;
                
             L.popup(latlng, {content: content})
         .openOn(themaLayer.forecast);
