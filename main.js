@@ -45,8 +45,8 @@ async function showForecast(url) {
                 let details = feature.properties.timeseries[0].data.instant.details;
                 let time = new Date(feature.properties.timeseries[0].time);
                 let content = `
+                <h4>Wettervorhersage für ${time.toLocaleString()}</h4>
                 <ul>
-                    <h4>Wettervorhersage für ${time.toLocaleString()}</h4>
                     <li>Luftdruck Meereshöhe (hPa): ${details.air_pressure_at_sea_level}</li> 
                     <li>Lufttemperatur(): ${details.air_temperature}</li> 
                     <li>relative Luftfeuchte (%): ${details.relative_humidity}</li> 
@@ -74,3 +74,13 @@ async function showForecast(url) {
     }).addTo(themaLayer.forecast)
 }
 showForecast("https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=47.267222&lon=11.392778");
+
+
+//auf Kartenklick reagieren 
+map.on("click",function(evt){
+    console.log(evt);
+    console.log(evt.latlng.lat, evt.latlng.lng);
+    showForecast(`https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=${evt.latlng.lat}&lon=${evt.latlng.lng}`)
+
+
+});
