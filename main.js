@@ -36,20 +36,21 @@ async function showForecast(url) {
     let jsondata = await response.json();
 
 
+// aktuelles Wetter und Wettervorhersage implementieren
 
-    // aktuelles Wetter und Wettervorhersage implementieren
     console.log(jsondata);
     L.geoJSON(jsondata, {
         pointToLayer: function(feature, latlng) {
+                let details = feature.properties.timeseries[0].data.instant.details;
+                console.log(details);
                 let content = `
                 <ul>
-                    <li>Luftdruck Meereshöhe (hPa): air_pressure_at_sea_level</li> 
-                    <li>Lufttemperatur(): air_temperature</li> 
-                    <li>relative Luftfeuchte (%): relative_humidity</li> 
-                    <li>Niederschlag (mm): precipitation_amount</li> 
-                    <li>Windrichtung (°): wind_from_direction</li> 
-                    <li>Bewölkungsgrad (%): cloud_area_fraction</li>
-                    <li>Windgeschwindigkeit (km/h): wind_speed</li>
+                    <li>Luftdruck Meereshöhe (hPa): ${details.air_pressure_at_sea_level}</li> 
+                    <li>Lufttemperatur(): ${details.air_temperature}</li> 
+                    <li>relative Luftfeuchte (%): ${details.relative_humidity}</li> 
+                    <li>Windrichtung (°): ${details.wind_from_direction}</li> 
+                    <li>Bewölkungsgrad (%): ${details.cloud_area_fraction}</li>
+                    <li>Windgeschwindigkeit (km/h): ${Math.round(details.wind_speed * 3.6)}</li>
                 </ul>`
                
             L.popup(latlng, {content: content})
